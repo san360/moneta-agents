@@ -9,3 +9,4 @@ requests-html==0.10.0
 streamlit==1.40.2
 streamlit-msal==0.2.0
 streamlit-pdf-viewer==0.0.19
+azure-identity==1.19.0

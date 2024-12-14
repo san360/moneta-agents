@@ -4,6 +4,7 @@ import logging
 import os
 from dotenv import load_dotenv
 from msal import PublicClientApplication
+from azure.identity import DefaultAzureCredential
 from config import (
     INS_AGENTS, 
     BANK_AGENTS, 
@@ -367,8 +368,9 @@ def send_message_to_backend(user_input, conversation_dict):
         payload["chat_id"] = conversation_dict.get('name')
 
     try:
+        token = DefaultAzureCredential().get_token(f'{BACKEND_ENDPOINT}/.default')
         url = f'{BACKEND_ENDPOINT}/http_trigger'
-        response = requests.post(url, json=payload)
+        response = requests.post(url, json=payload, headers={"Authorization": f"Bearer {token.token}"})
         response.raise_for_status()
         assistant_response = response.json()
         st.session_state.conversations[st.session_state.current_conversation_index]['name'] = assistant_response['chat_id']
@@ -386,7 +388,6 @@ def send_message_to_backend(user_input, conversation_dict):
 
         # Return all non-empty assistant messages
         return assistant_messages
-
     except requests.exceptions.RequestException as e:
         st.error(f"Error: {e}")
         logging.error(e, exc_info=True)

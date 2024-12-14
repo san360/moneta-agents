@@ -323,7 +323,7 @@ module frontendApp 'modules/app/containerapp.bicep' = {
       DISABLE_LOGIN: 'True'
 
       // BACKEND_ENDPOINT: backendApp.outputs.URL
-      BACKEND_ENDPOINT: backendApp.outputs.internalUrl
+      BACKEND_ENDPOINT: backendApp.outputs.URL
 
       // required for container app daprAI
       APPLICATIONINSIGHTS_CONNECTION_STRING: appInsights.properties.ConnectionString
@@ -348,7 +348,6 @@ module frontendContainerAppAuth 'modules/app/container-apps-auth.bicep' = {
     openIdIssuer: '${environment().authentication.loginEndpoint}${authTenantId}/v2.0' // Works only for Microsoft Entra
     unauthenticatedClientAction: 'RedirectToLoginPage'
     allowedApplications:[
-      authClientId
       '04b07795-8ddb-461a-bbee-02f9e1bf7b46' // AZ CLI for testing purposes
     ]
   }
@@ -408,7 +407,7 @@ module backendContainerAppAuth 'modules/app/container-apps-auth.bicep' = {
     openIdIssuer: '${environment().authentication.loginEndpoint}${authTenantId}/v2.0' // Works only for Microsoft Entra
     unauthenticatedClientAction: 'Return401'
     allowedApplications:[
-      authClientId
+      appIdentity.outputs.clientId
       '04b07795-8ddb-461a-bbee-02f9e1bf7b46' // AZ CLI for testing purposes
     ]
   }

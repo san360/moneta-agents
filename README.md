@@ -156,3 +156,24 @@ func host start
 4. **Chat**: Use the chat input to ask questions. Predefined questions are available in a dropdown
 5. **Agents Online**: View the available agents for the selected use case
 6. **Chat Histories**: View and reload your past conversations
+
+### Somewhat useful commands
+
+Cleaning up your application (WILL DELETE THE APP AND THE DATA):
+```bash
+azd down --purge --force
+```
+
+Delete the Azure Entra App Registration:
+```bash
+az ad app delete --id $(az ad app list --display-name $(azd env get-value AZURE_ENV_NAME) --query '[].id'  -o tsv)
+```
+
+Deleting all RBAC assignments:
+```bash
+for id in $(az role assignment list --all --query "[?contains(scope, '/rg-argus-005/')].{id:id}" -o tsv)
+do 
+  az role assignment delete --ids $id
+done
+```
+(useful mostly when developing RBAC and the assignments are changing a lot)

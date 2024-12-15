@@ -30,7 +30,7 @@ st.set_page_config(
 # Constants
 CLIENT_ID = os.getenv('AZ_REG_APP_CLIENT_ID','')
 TENANT_ID = os.getenv('AZ_TENANT_ID','')
-BACKEND_ENDPOINT = os.getenv('BACKEND_ENDPOINT')
+BACKEND_ENDPOINT = os.getenv('BACKEND_ENDPOINT', 'http://localhost:8000')
 REDIRECT_URI = os.getenv("WEB_REDIRECT_URI")
 DISABLE_LOGIN = os.getenv('DISABLE_LOGIN')
 
@@ -166,7 +166,7 @@ def fetch_conversations():
     }
 
     try:
-        response = requests.post(f'{BACKEND_ENDPOINT}/http_trigger', json=payload)
+        response = call_backend(payload)
         return response.json()
     except requests.exceptions.RequestException as e:
         st.error(f"Error fetching conversations: {e}")
@@ -368,10 +368,7 @@ def send_message_to_backend(user_input, conversation_dict):
         payload["chat_id"] = conversation_dict.get('name')
 
     try:
-        token = DefaultAzureCredential().get_token(f'{BACKEND_ENDPOINT}/.default')
-        url = f'{BACKEND_ENDPOINT}/http_trigger'
-        response = requests.post(url, json=payload, headers={"Authorization": f"Bearer {token.token}"})
-        response.raise_for_status()
+        response = call_backend(payload)
         assistant_response = response.json()
         st.session_state.conversations[st.session_state.current_conversation_index]['name'] = assistant_response['chat_id']
 
@@ -392,6 +389,23 @@ def send_message_to_backend(user_input, conversation_dict):
         st.error(f"Error: {e}")
         logging.error(e, exc_info=True)
         return {"role": "assistant", "name": "System", "content": "Sorry, an error occurred while processing your request."}
+
+def call_backend(payload):
+    """
+    Call the backend API with the given payload. Raises and exception if HTTP response code is not 200.
+    TODO: fetch token only once
+    TODO: checking the URL for a local run seems a bit hacky, is there a better way?
+    """
+    url = f'{BACKEND_ENDPOINT}/http_trigger'
+    headers = {}
+
+    if not (url.startswith('http://localhost') or url.startswith('http://127.0.0.1')):
+        token = DefaultAzureCredential().get_token(f'{BACKEND_ENDPOINT}/.default')
+        headers['Authorization'] = f"Bearer {token.token}"
+    
+    response = requests.post(url, json=payload, headers=headers)
+    response.raise_for_status()
+    return response
 
 def start_new_conversation():
     st.session_state.conversations.append({

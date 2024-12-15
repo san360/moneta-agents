@@ -36,19 +36,22 @@ def get_token_via_graph(credential):
 
 if __name__ == "__main__":
     result = run("azd env get-values", stdout=PIPE, stderr=PIPE, shell=True, text=True)
-    if result.returncode != 0:
-        raise Exception("azd env get-values failed")
-    load_dotenv(stream=StringIO(result.stdout), override=True)
+    if result.returncode == 0:
+        print("Loading from azd env")
+        load_dotenv(stream=StringIO(result.stdout))
+    else:
+        print("Loading from .env")
+        load_dotenv()
 
 
     base_url = os.getenv('SERVICE_BACKEND_URL')
-    url = f"{os.getenv('SERVICE_BACKEND_URL')}/http_trigger"
+    url = f"{base_url}/http_trigger"
 
     credential = DefaultAzureCredential()
 
     url = f"{os.getenv('SERVICE_BACKEND_URL')}/http_trigger"
     #token = get_token_via_graph(credential)
-    token = credential.get_token(f"{os.getenv('SERVICE_BACKEND_URL')}/.default", )
+    token = credential.get_token(f"api://{os.getenv('AZURE_CLIENT_APP_ID')}/.default", )
 
     data = {
         "user_id": "123",

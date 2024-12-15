@@ -31,8 +31,9 @@ st.set_page_config(
 CLIENT_ID = os.getenv('AZ_REG_APP_CLIENT_ID','')
 TENANT_ID = os.getenv('AZ_TENANT_ID','')
 BACKEND_ENDPOINT = os.getenv('BACKEND_ENDPOINT', 'http://localhost:8000')
-REDIRECT_URI = os.getenv("WEB_REDIRECT_URI")
+REDIRECT_URI = os.getenv("WEB_REDIRECT_URI", '')
 DISABLE_LOGIN = os.getenv('DISABLE_LOGIN')
+AZURE_CLIENT_APP_ID = os.getenv('AZURE_CLIENT_APP_ID')
 
 st.markdown("""
     <style>
@@ -400,7 +401,7 @@ def call_backend(payload):
     headers = {}
 
     if not (url.startswith('http://localhost') or url.startswith('http://127.0.0.1')):
-        token = DefaultAzureCredential().get_token(f'{BACKEND_ENDPOINT}/.default')
+        token = DefaultAzureCredential().get_token(f'api://{AZURE_CLIENT_APP_ID}/.default')
         headers['Authorization'] = f"Bearer {token.token}"
     
     response = requests.post(url, json=payload, headers=headers)

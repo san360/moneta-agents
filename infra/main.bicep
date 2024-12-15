@@ -325,9 +325,13 @@ module frontendApp 'modules/app/containerapp.bicep' = {
       // BACKEND_ENDPOINT: backendApp.outputs.URL
       BACKEND_ENDPOINT: backendApp.outputs.URL
 
-      // required for container app daprAI
+      // Required for the frontend app to ask for a token for the backend app
+      AZURE_CLIENT_APP_ID: authClientId
+
+      // Required for container app daprAI
       APPLICATIONINSIGHTS_CONNECTION_STRING: appInsights.properties.ConnectionString
 
+      // Required for managed identity
       AZURE_CLIENT_ID: appIdentity.outputs.clientId
     }
     keyvaultIdentities: {
@@ -383,10 +387,10 @@ module backendApp 'modules/app/containerapp.bicep' = {
       COSMOSDB_ENDPOINT: cosmosDbAccount.properties.documentEndpoint
       HANDLER_TYPE: 'semantickernel'
 
-      // required for container app daprAI
+      // Required for container app daprAI
       APPLICATIONINSIGHTS_CONNECTION_STRING: appInsights.properties.ConnectionString
 
-      // required for managed identity
+      // Required for managed identity
       AZURE_CLIENT_ID: backendIdentity.outputs.clientId
     }
     keyvaultIdentities: {

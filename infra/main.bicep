@@ -139,7 +139,7 @@ var _storageAccountName = take(
   '${abbreviations.storageStorageAccounts}${alphaNumericEnvironmentName}${resourceToken}',
   24
 )
-var _azureOpenAiName = take('${abbreviations.cognitiveServicesOpenAI}${alphaNumericEnvironmentName}', 63)
+var _azureOpenAiName = take('${abbreviations.cognitiveServicesOpenAI}${alphaNumericEnvironmentName}${resourceToken}', 63)
 var _aiHubName = take('${abbreviations.aiPortalHub}${environmentName}', 260)
 var _aiProjectName = take('${abbreviations.aiPortalProject}${environmentName}', 260)
 var _aiSearchServiceName = take('${abbreviations.searchSearchServices}${environmentName}', 260)
@@ -629,8 +629,8 @@ module keyVault 'br/public:avm/res/key-vault/vault:0.11.0' = {
       }
       {
         principalId: azurePrincipalId
-        roleDefinitionIdOrName: 'Key Vault Administrator'
         principalType: principalType
+        roleDefinitionIdOrName: 'Key Vault Administrator'
       }
     ]
     secrets: empty(authClientSecret)

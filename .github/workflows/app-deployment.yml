@@ -48,7 +48,7 @@ jobs:
         with:
           azcliversion: latest
           inlineScript: |
-            az group create --name ${{env.AZURE_RESOURCE_GROUP}} --location ${{env.AZURE_LOCATION}}
+            az group create --location ${{env.AZURE_LOCATION}} --resource-group ${{env.AZURE_RESOURCE_GROUP}} 
 
       - name: Provision Infrastructure
         run: azd provision --no-prompt

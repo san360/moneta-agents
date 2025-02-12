@@ -689,23 +689,23 @@ module frontendApp 'modules/app/container-apps.bicep' = {
       AZURE_CLIENT_ID: frontendIdentity.outputs.clientId
       
     }
-    keyvaultIdentities: keyvaultIdentities
+    // keyvaultIdentities: keyvaultIdentities
   }
 }
 
-module frontendContainerAppAuth 'modules/app/container-apps-auth.bicep' = if (authClientSecret != '') {
-  name: 'frontend-container-app-auth-module'
-  params: {
-    name: frontendApp.outputs.name
-    clientId: authClientId
-    clientSecretName: 'microsoft-provider-authentication-secret'
-    openIdIssuer: '${environment().authentication.loginEndpoint}${authTenantId}/v2.0' // Works only for Microsoft Entra
-    unauthenticatedClientAction: 'RedirectToLoginPage'
-    allowedApplications: [
-      '04b07795-8ddb-461a-bbee-02f9e1bf7b46' // AZ CLI for testing purposes
-    ]
-  }
-}
+// module frontendContainerAppAuth 'modules/app/container-apps-auth.bicep' = if (authClientSecret != '') {
+//   name: 'frontend-container-app-auth-module'
+//   params: {
+//     name: frontendApp.outputs.name
+//     clientId: authClientId
+//     clientSecretName: 'microsoft-provider-authentication-secret'
+//     openIdIssuer: '${environment().authentication.loginEndpoint}${authTenantId}/v2.0' // Works only for Microsoft Entra
+//     unauthenticatedClientAction: 'RedirectToLoginPage'
+//     allowedApplications: [
+//       '04b07795-8ddb-461a-bbee-02f9e1bf7b46' // AZ CLI for testing purposes
+//     ]
+//   }
+// }
 
 /* ------------------------------ Backend App ------------------------------- */
 

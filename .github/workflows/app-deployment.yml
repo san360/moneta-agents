@@ -43,6 +43,13 @@ jobs:
             --tenant-id "$Env:AZURE_TENANT_ID"
         shell: pwsh
 
+      - name: Azure CLI script
+        uses: azure/cli@v2
+        with:
+          azcliversion: latest
+          inlineScript: |
+            az group create --name $AZURE_RESOURCE_GROUP --location $AZURE_LOCATION
+
       - name: Provision Infrastructure
         run: azd provision --no-prompt
         env:

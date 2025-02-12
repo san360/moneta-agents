@@ -18,6 +18,10 @@ param extraTags object = {}
 @description('Location for all resources')
 param location string = resourceGroup().location
 
+@description('Whether the deployment is running on GitHub Actions')
+param runningOnGh string = ''
+
+
 /* ---------------------------- Shared Resources ---------------------------- */
 
 @maxLength(63)
@@ -108,6 +112,8 @@ var tags = union(
   },
   extraTags
 )
+
+var principalType = empty(runningOnGh) ? 'User' : 'ServicePrincipal'
 
 @description('Azure OpenAI API Version')
 var azureOpenAiApiVersion = '2024-12-01-preview'
@@ -275,7 +281,7 @@ module storageAccount 'br/public:avm/res/storage/storage-account:0.15.0' = {
             {
               roleDefinitionIdOrName: 'Storage Blob Data Contributor'
               principalId: azurePrincipalId
-              principalType: 'User'
+              principalType: principalType
             }
             {
               roleDefinitionIdOrName: 'Storage Blob Data Contributor'
@@ -335,6 +341,7 @@ module azureOpenAi 'modules/ai/cognitiveservices.bicep' = {
       {
         roleDefinitionIdOrName: 'Cognitive Services OpenAI Contributor'
         principalId: azurePrincipalId
+        principalType: principalType
       }
     ]
   }
@@ -378,7 +385,7 @@ module openAiEmbeddings 'br/public:avm/res/cognitive-services/account:0.8.0' = {
       {
         roleDefinitionIdOrName: 'Cognitive Services OpenAI User'
         principalId: azurePrincipalId
-        principalType: 'User'
+        principalType: principalType
       }
     ]
   }
@@ -412,12 +419,12 @@ module searchService 'br/public:avm/res/search/search-service:0.8.2' = {
       {
         roleDefinitionIdOrName: 'Search Index Data Contributor'
         principalId: azurePrincipalId
-        principalType: 'User'
+        principalType: principalType
       }
       {
         roleDefinitionIdOrName: 'Search Service Contributor'
         principalId: azurePrincipalId
-        principalType: 'User'
+        principalType: principalType
       }
     ]
   }
@@ -623,6 +630,7 @@ module keyVault 'br/public:avm/res/key-vault/vault:0.11.0' = {
       {
         principalId: azurePrincipalId
         roleDefinitionIdOrName: 'Key Vault Administrator'
+        principalType: principalType
       }
     ]
     secrets: empty(authClientSecret)

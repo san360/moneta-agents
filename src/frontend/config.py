@@ -25,8 +25,8 @@ BANK_PREDEFINED_QUESTIONS = [
     "What is our in-house view from our CIO about Growth investing?",
     "Show Pete Mitchell portfolio performance and suggest any rebalancing options based on recent CIO views.",
     "List 3 Funds or ETFs we are offering for growth focused strategies",
-    "Can you give me an update on the UBS 100 Index Switzerland Equity Fund CHF and its latest performance?",
-    "Craft a rebalance proposal for the client Pete Mitchell increasing the weight of investments in tech stocks absed on our offering"
+    "Can you give me an update on the Moneta Bank MSCI World ETF and its latest performance?",
+    "Craft a rebalance proposal for the client Pete Mitchell increasing the weight of investments in tech stocks based on our offering"
 
 ]
 
@@ -50,6 +50,37 @@ BANK_AGENTS = {
         'emoji': '📰', 
         'color': '#6c757d',
         'description': 'Automatically collects and organizes the latest investment news from Morningstar for your portfolio positions. It helps you stay informed about your investments by gathering relevant articles, including their titles, descriptions, categories, and publication details, all presented in an organized format for easy review.'
+    }
+}
+
+# Energy Configuration
+ENERGY_PREDEFINED_QUESTIONS = [
+    "Get energy market news from today and analyze the content for insights",
+    "Analyze the production and consumption for the next days based on weather forecast",
+    "What was Solar production in Switzerland yesterday?",
+    "What was total consumption of electricity in the last week in Switzerland?"
+]
+
+ENERGY_AGENTS = {
+    'Electricity': {
+        'emoji': '📈', 
+        'color': '#17a2b8',
+        'description': 'Electricity data on consumption and production in Switzerland.'
+    },
+    'News': {
+        'emoji': '🔍', 
+        'color': '#ffc107',
+        'description': 'Energy related news and articles search.'
+    },
+    'Insights': {
+        'emoji': '💰', 
+        'color': '#007bff',
+        'description': 'Provide prices and forecasts insights out of market news and researches.'
+    },
+    'Weather': {
+        'emoji': '☀️', 
+        'color': 'Ffff00',
+        'description': 'Provide weather forecasts information'
     }
 }
 

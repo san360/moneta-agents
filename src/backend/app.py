@@ -37,7 +37,6 @@ app = FastAPI()
 @app.post("/http_trigger")
 async def http_trigger(request_body: dict = Body(...)):
     logging.info('Empowering RMs - HTTP trigger function processed a request.')
-        
 
     # Extract parameters from the request body  
     user_id = request_body.get('user_id')
@@ -45,6 +44,8 @@ async def http_trigger(request_body: dict = Body(...)):
     user_message = request_body.get('message')
     load_history = request_body.get('load_history')
     usecase_type = request_body.get('use_case')
+    is_deep_research = request_body.get('is_deep_research')
+    logging.debug(f'is_deep_research = {is_deep_research}')
   
     # Validate required parameters
     if not user_id:
@@ -71,6 +72,8 @@ async def http_trigger(request_body: dict = Body(...)):
             container_name = os.getenv("COSMOSDB_CONTAINER_FSI_INS_USER_NAME")  
         elif usecase_type == 'fsi_banking':  
             container_name = os.getenv("COSMOSDB_CONTAINER_FSI_BANK_USER_NAME")  
+        elif usecase_type == 'energy':  
+            container_name = os.getenv("COSMOSDB_CONTAINER_ENERGY_USER_NAME")       
         else:  
             raise HTTPException(status_code=400, detail="Use case not recognized/not implemented...")  
     
@@ -110,7 +113,8 @@ async def http_trigger(request_body: dict = Body(...)):
                 user_message=user_message,
                 load_history=load_history,
                 usecase_type=usecase_type,
-                user_data=user_data
+                user_data=user_data,
+                is_deep_research=is_deep_research
             )  
         except Exception as e:  
             logging.error(f"Error in handler: {e}")  

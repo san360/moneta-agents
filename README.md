@@ -1,8 +1,8 @@
-# Moneta - an AI-Agentic Assistant for Insurance and Banking
+# Moneta - an AI-Agentic Assistant for FSI & Energy Use cases
 
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/albertaga27/aoai-fsi-empowering-advisory-agentic) [![Open in Dev Containers](https://img.shields.io/static/v1?style=for-the-badge&label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/albertaga27/aoai-fsi-empowering-advisory-agentic)
 
-Moneta is an AI-powered assistant designed to empower insurance and banking advisors. This Solution Accelerator provides a chat interface where advisors can interact with various AI agents specialized in different domains such as insurance policies, CRM, product information, funds, CIO insights, and news.
+Moneta is an AI-powered assistant designed to empower insurance and banking advisors or energy traders and analysts. This Solution Accelerator provides a chat interface where advisors can interact with various AI agents specialized in different domains such as insurance policies, CRM, product information, funds, CIO insights, and news.
 
 You can choose chich Agentic orchestration framework the Solution uses behind the scene by setting the approriate env variable. Choose from: 
 * [Semantic Kernel](https://learn.microsoft.com/en-us/semantic-kernel/overview/) 
@@ -18,7 +18,7 @@ You can choose chich Agentic orchestration framework the Solution uses behind th
 ## Features
 
 - Agentic framework selection Support: Switch between Semantic Kernel and experimental MSFT GBB Vanilla Agents
-- Multi-Use Case Support: Switch between insurance and banking use cases
+- Multi-Use Case Support: Switch between insurance, banking and energy use cases
 - Agent Collaboration: Agents collaborate to provide the best answers
 - Azure AD Authentication: Secure login with Microsoft Azure Active Directory
 - Conversation History: Access and continue previous conversations
@@ -47,6 +47,14 @@ You can choose chich Agentic orchestration framework the Solution uses behind th
 - `News`: RSS online feed search on stock news
 - `Responder`: collects previous agents replies and respond to the user
 
+### Energy (SK)
+
+- `Electricity`: fetches daily consumption and demand of the Swiss electricity Grid
+- `Weather`: uses public API to fetch weather forecasts
+- `Insights`: analyse other agnets data with specific instructions to produce valuable insights
+- `News`: RSS online feed search on renewable energy news and articles
+- `Responder`: collects previous agents replies and respond to the user
+
 Note: GBB Vanilla agents are similar but differs a bit (no responder agent)
 
 ## Project structure
@@ -62,6 +70,7 @@ Note: GBB Vanilla agents are similar but differs a bit (no responder agent)
       - agents
         - banking # agents files
         - insurance # agents files
+        - energy # agents files
       - orchestrators
       - skills
     - app.py # exposes API
@@ -180,7 +189,7 @@ uv sync
 
 ### Usage
 
-1. **Select Use Case**: Choose between `fsi_insurance` and `fsi_banking` from the sidebar
+1. **Select Use Case**: Choose between `fsi_insurance`, `fsi_banking` and `energy` from the sidebar
 2. **Start a Conversation**: Click "Start New Conversation" or select an existing one
 3. **Chat**: Use the chat input to ask questions. Predefined questions are available in a dropdown
 4. **Agents Online**: View the available agents for the selected use case
